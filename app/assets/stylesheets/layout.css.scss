@@ -1,0 +1,7 @@
+body {
+  color: $main-font-color;
+}
+.container {
+  background: $light-blue;
+  @include border-radius(4px);
+}
