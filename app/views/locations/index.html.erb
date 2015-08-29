@@ -23,7 +23,7 @@
         <td><%= location.longitude %></td>
         <td><%= location.address %></td>
         <td><%= location.description %></td>
-        <td><%= location.title %></td>
+        <td class="title"><%= location.title %></td>
         <td><%= link_to 'Show', location %></td>
         <td><%= link_to 'Edit', edit_location_path(location) %></td>
         <td><%= link_to 'Destroy', location, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -38,13 +38,48 @@
 
 <div style='width: 800px;'>
   <div id="map" style='width: 800px; height: 400px;'></div>
+  <div id="sidebar_container"></div>
 </div>
 
 <script type="text/javascript" charset="utf-8">
+
+  function createSidebarLi(json){
+    return ("<li><a>" + json.marker_title + "</a></li>");
+  };
+
+  function bindLiToMarker($li, marker){
+    $li.on('click', function(){
+      handler.getMap().setZoom(14);
+      marker.setMap(handler.getMap()); //because clusterer removes map property from marker
+      marker.panTo();
+      google.maps.event.trigger(marker.getServiceObject(), 'click');
+    })
+  };
+
+  function createSidebar(json_array){
+    _.each(json_array, function(json){
+      var $li = $( createSidebarLi(json) );
+      $li.appendTo('#sidebar_container');
+      bindLiToMarker($li, json.marker);
+    });
+  };
+
   handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+  handler.buildMap({ internal: {id: 'map'}}, function(){
+    var json_array = <%=raw @hash.to_json %> ;
+
+    var markers = handler.addMarkers(json_array);
+
+    _.each(json_array, function(json, index){
+      json.marker = markers[index];
+    });
+
+    createSidebar(json_array);
     handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
   });
+
 </script>
+
+
+
