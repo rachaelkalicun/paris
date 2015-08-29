@@ -8,6 +8,11 @@ class LocationsController < ApplicationController
     @hash = Gmaps4rails.build_markers(@locations) do |location, marker|
       marker.lat location.latitude
       marker.lng location.longitude
+      marker.infowindow location.title + location.description
+      marker.picture({
+                         'url' => view_context.image_path('map-marker.png'),
+                         'width' =>  32,
+                         'height' => 32})
     end
   end
 
