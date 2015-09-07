@@ -16,8 +16,10 @@ class LocationsController < ApplicationController
        'height' => 32})
     end
 
-    json = @hash.to_json
-    puts 'json' + json
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # GET /locations/1
@@ -37,26 +39,24 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    @location = Location.new(location_params)
-
+    @locations = Location.all
+    @location = Location.create(location_params)
     respond_to do |format|
-      if @location.save
-        format.html { redirect_to @location, notice: 'Location was successfully created.' }
-        format.json { render :show, status: :created, location: @location }
-      else
-        format.html { render :new }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
-      end
+      format.html
+      format.js
     end
   end
 
   # PATCH/PUT /locations/1
   # PATCH/PUT /locations/1.json
   def update
+    @locations = Location.all
+    @location = Location.find(params[:id])
     respond_to do |format|
       if @location.update(location_params)
-        format.html { redirect_to @location, notice: 'Location was successfully updated.' }
-        format.json { render :show, status: :ok, location: @location }
+        format.html { redirect_to @location }
+        format.js
+
       else
         format.html { render :edit }
         format.json { render json: @location.errors, status: :unprocessable_entity }
@@ -67,10 +67,12 @@ class LocationsController < ApplicationController
   # DELETE /locations/1
   # DELETE /locations/1.json
   def destroy
+    @locations = Location.all
+    @location = Location.find(params[:id])
     @location.destroy
     respond_to do |format|
-      format.html { redirect_to locations_url, notice: 'Location was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html
+      format.js
     end
   end
 
