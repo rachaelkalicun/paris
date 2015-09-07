@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :locations
+
+  resources :locations do
+    collection do
+      get :manage_locations
+    end
+  end
   get 'info/home'
 
   get 'info/about'
