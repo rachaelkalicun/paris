@@ -20,6 +20,7 @@
       <%= f.input :address, placeholder: 'Enter Address' %>
       <%= f.input :description, placeholder: 'Enter Description' %>
       <%= f.input :title, placeholder: 'Enter Title' %>
+      <%= f.input :day, collection: %w{thursday friday saturday sunday monday} %>
       <%= f.submit 'Add', class: 'btn btn-default' %>
     <% end %>
 
