@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829194809) do
+ActiveRecord::Schema.define(version: 20150907190824) do
 
   create_table "locations", force: :cascade do |t|
     t.float    "latitude",    limit: 24
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150829194809) do
     t.string   "title",       limit: 255
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "day",         limit: 255
   end
 
 end
